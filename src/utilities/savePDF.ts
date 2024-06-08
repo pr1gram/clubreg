@@ -2,10 +2,17 @@ import chrome from "chrome-aws-lambda"
 import puppeteer from "puppeteer-core"
 
 export async function savePDF(url: string) {
+  console.log( chrome)
     const options = process.env.AWS_REGION
+    
       ? {
           args: chrome.args,
-          executablePath: await chrome.executablePath,
+          executablePath:
+            process.platform === "win32"
+              ? "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+              : process.platform === "linux"
+              ? "/usr/bin/google-chrome"
+              : "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
           headless: chrome.headless,
         }
       : {
